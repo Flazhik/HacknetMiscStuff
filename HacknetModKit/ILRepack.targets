@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="ILRepacker" AfterTargets="AfterBuild">
+        <ItemGroup>
+            <InputAssemblies Include="$(TargetDir)HacknetModKit.exe" />
+            <InputAssemblies Include="$(TargetDir)Mono.Cecil.dll" />
+            <InputAssemblies Include="$(TargetDir)Mono.Cecil.Mdb.dll" />
+            <InputAssemblies Include="$(TargetDir)Mono.Cecil.Pdb.dll" />
+            <InputAssemblies Include="$(TargetDir)Mono.Cecil.Rocks.dll" />
+        </ItemGroup>
+
+        <ItemGroup>
+            <SearchDirectories Include="$(BepInExCoreDir)" />
+            <SearchDirectories Include="$(ManagedDir)" />
+        </ItemGroup>
+
+        <ILRepack
+                Parallel="true"
+                Internalize="true"
+                InputAssemblies="@(InputAssemblies)"
+                LibraryPath="@(SearchDirectories)"
+                TargetKind="Exe"
+                OutputFile="$(TargetDir)$(AssemblyName).exe"
+        />
+    </Target>
+</Project>
